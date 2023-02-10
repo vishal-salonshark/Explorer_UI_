@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <div className=" px-44 pb-20 w-full">
-      <div className="my-16 px-10 text-slate-50">
+      <div className="my-10 px-10 text-slate-50">
         <h1 className="mb-5 text-4xl"> Erium Chain Explain </h1>
         <input
           type="text"
