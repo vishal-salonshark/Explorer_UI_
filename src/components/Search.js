@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BiChevronDown } from 'react-icons/bi'
+import { TfiClose } from "react-icons/tfi";
 
 const Search = ({ setModalOn, setChoice }) => {
   const [options, setOptions] = useState(null)
@@ -11,11 +12,19 @@ const Search = ({ setModalOn, setChoice }) => {
     const data = [{ option: 'Blocks' }, { option: 'Transaction' }]
     setOptions(data)
   }, [])
+  useEffect(() => {
+    console.log(selected)
+  }, [selected])
+  
+    const handleCancelClick = () => {
+      setModalOn(false)
+  }
+ 
 
   return (
     <div className="   bg-[#030214] opacity-90 fixed inset-0 z-50   ">
-      <div className="flex h-screen justify-center items-center " onClick={()=>setOpen(false)}>
-        <div className="flex flex-col justify-center align-middle items-center bg-[#030214] py-4 px-8  rounded-xl h-auto w-3/4">
+      <div className="flex h-screen justify-center items-center " >
+        <div className="flex flex-col justify-center align-middle items-center bg-[#030214] py-4 px-8  rounded-xl h-auto w-3/4 z-10"  >
           
           <div className="flex flex-row item-center mb-16  justify-center  shadow-2xl shadow-[#89cdb3c2] rounded-lg h-16 w-4/6 ">
             <div
@@ -31,7 +40,7 @@ const Search = ({ setModalOn, setChoice }) => {
                 : 'Select item'}
               <BiChevronDown size={20} className={`${open && 'rotate-180'}`} />
               <ul
-                className={`bg-white mt-2 fixed top-1/5  left-1/6 right-1/6 overflow-y-auto  ${
+                className={`bg-white mt-2 absolute top-1/4 left-[35rem] right-[70rem] overflow-y-auto  ${
                   open ? 'max-h-60' : 'max-h-0'
                 } `}
               >
@@ -299,6 +308,10 @@ const Search = ({ setModalOn, setChoice }) => {
 
             </div>
           </div>
+          
+        </div>
+        <div className='flex justify-center items-center fixed top-[5rem] h-22 w-22 right-[10rem]'>
+                <TfiClose className=' h-10 w-10 z-10 font-bold text-white' onClick={handleCancelClick} />
         </div>
       </div>
     </div>
