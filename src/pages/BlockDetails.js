@@ -1,14 +1,39 @@
-import React from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
+import AppContext from '../components/AppContext'
 import {BsArrowRight, BsFillInfoCircleFill} from 'react-icons/bs'
 
+import Axios from 'axios'
+
 const BlockDetails = () => {
+// eslint-disable-next-line
+  const [blockDetails, setBlockDetails] = useState([]);
+  // const [transaction, setTransactions] = useState([]);
+  
+  const { blockNumberContext} = useContext(AppContext)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const value = Number(blockNumberContext)
+      Axios.get(`http://localhost:3001/block/${value}`).then(async (response) => {
+        setBlockDetails(response.data);
+        // console.log(blockDetails)
+      });
+
+      // Axios.get(`http://localhost:3001/tarnsactions/${value}`).then((response) => {
+      //   setTransactions(response.data);
+      // });
+    }, 1000)
+    return () => clearTimeout(timer);
+  }, [blockNumberContext]);
+
+
   return (
     <div className='flex flex-col justify-center items-center w-full min-h-screen py-2'>
     <div className="bg-white min-h-[80vh] w-4/5 mt-16 rounded-2xl flex flex-col shadow-2xl shadow-[#89cdb3b7]">
         <label className=" text-[#030214]  px-16 py-5 text-xl">
           Blocks Details
         </label>
+
         <div className='h-[35rem] w-full mb-10 flex justify-start items-center flex-col overflow-auto  scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-ful'>
 
         <div className='  w-full h-16 px-16 flex flex-row '>
@@ -17,7 +42,7 @@ const BlockDetails = () => {
             <label>Block Height</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>752363</label>
+          <label>{blockDetails.number}</label>
          </div>
         </div>
 
@@ -26,8 +51,8 @@ const BlockDetails = () => {
             <BsFillInfoCircleFill className='mx-2'/>
             <label>Timestamp</label>
           </div>
-          <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>23 hours ago | February-12-2023 06:09:18 PM +5.5 UTC</label>
+          <div className=' text-black font-light text-sm flex flex-row justify-start items-center '>
+          <label>{Date(blockDetails.timestamp)}</label>
          </div>
         </div>
 
@@ -37,7 +62,7 @@ const BlockDetails = () => {
             <label>Transactions</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label className='p-1 bg-blue-100 text-blue-500 rounded'>100 Transaction</label>
+          <label className='p-1 bg-blue-100 text-blue-500 rounded'>{blockDetails.transactions === !null ? blockDetails.transactions.length : 0} Transaction</label>
          </div>
         </div>
 
@@ -47,7 +72,7 @@ const BlockDetails = () => {
             <label>Miner</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label className='text-blue-500'>0x82b842992a7050443E54686e8c3483798dC5E678</label>
+          <label className='text-blue-500'>{blockDetails.miner}</label>
          </div>
         </div>
 
@@ -57,7 +82,7 @@ const BlockDetails = () => {
             <label>Size</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>696 bytes</label>
+          <label>{blockDetails.size} bytes</label>
          </div>
         </div>
 
@@ -67,7 +92,7 @@ const BlockDetails = () => {
             <label>Hash</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>0x695f4df5e9ff4adf6232546631af7f48ea6bc56b3440c1d5578cde4b107f2b26</label>
+          <label>{blockDetails.hash}</label>
          </div>
         </div>
 
@@ -77,7 +102,7 @@ const BlockDetails = () => {
             <label>Parent Hash</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label className='text-blue-500'>0xeb6a017cd1a44ea10a7b7a075b23ccc991382d36559c96831ed24fb5f2a82219</label>
+          <label className='text-blue-500'>{blockDetails.parentHash}</label>
          </div>
         </div>
 
@@ -87,7 +112,7 @@ const BlockDetails = () => {
             <label>Difficulty</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>340,282,366,920,938,463,463,374,607,431,768,211,454</label>
+          <label>{blockDetails.difficulty}</label>
          </div>
         </div>
 
@@ -97,7 +122,7 @@ const BlockDetails = () => {
             <label>Total Difficulty</label>
           </div>
           <div className='  text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>256,015,862,423,738,025,186,694,909,771,187,426,316,314,051</label>
+          <label>{blockDetails.totalDifficulty}</label>
          </div>
         </div>
 
@@ -107,7 +132,7 @@ const BlockDetails = () => {
             <label>Gas Used</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>21,000 | 0.3%</label>
+          <label>{blockDetails.gasUsed}</label>
          </div>
         </div>
 
@@ -117,7 +142,7 @@ const BlockDetails = () => {
             <label>Gas Limit</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>8,000,000</label>
+          <label>{blockDetails.gasLimit}</label>
          </div>
         </div>
 
@@ -127,7 +152,7 @@ const BlockDetails = () => {
             <label>Nonce</label>
           </div>
           <div className='   text-black font-light text-sm flex flex-row justify-start items-center '>
-          <label>0x0000000000000000</label>
+          <label>{blockDetails.nonce}</label>
          </div>
         </div>
 
@@ -141,15 +166,16 @@ const BlockDetails = () => {
          </div>
         </div>
         </div>
-
-      </div>
-
-
+    </div>
 
       <div className=" bg-white  my-16 min-h-[80vh] w-4/5 rounded-2xl flex flex-col shadow-2xl shadow-[#89cdb3b7]">
         <label className=" text-[#030214]  px-16 py-5 text-xl">Transactions</label>
         <div className=" w-full h-[40rem] mb-10 flex justify-start items-center flex-col overflow-auto  scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full ">
-         
+        {/* {
+          blockDetails.transactions.map((tx) =>
+            const transaction =  await web3.eth getTransactionRcipt(tx)
+          )
+        }  */}
           <div className="w-11/12 h-28 m-2 flex flex-row ">
             <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
               <Link
@@ -168,337 +194,14 @@ const BlockDetails = () => {
                 </small>
                 <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
               </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
+              <div className=" w-1/4 flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
                 <small className='text-blue-500'>Block #752363</small>
                 <small>22 hours ago</small>
               </div>
             </div>
           </div>
 
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
 
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
-
-         <div className="w-11/12 h-28 m-2 flex flex-row ">
-            <div className="bg-blue-200  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
-              <Link
-                className="font-bold  text-sm text-blue-700"
-                to={`/blockDetails`}
-              >
-                Transactions
-              </Link>
-              <label className="font-light text-sm text-blue-500">Success</label>
-            </div>
-            <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
-              <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                <small className='text-blue-500'>0x6963b949e1e61d60fec001a715f5748f067dc6502b3465fd5a8377b69c115505  <small className='text-black font-light bg-gray-300 rounded-sm my-1 p-1 '>Transfer</small></small>
-                <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                  0x24BA172363436962811e6C62E30B19Cbd7D615F1 <BsArrowRight className=" text-blue-500"/> 0x82b842992a7050443E54686e8c3483798dC5E678
-                </small>
-                <small className='text-black font-light'>705 BIGB <small className='text-gray-400 '>0 TX Fee</small></small>
-              </div>
-              <div className=" w-[30rem] flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                <small className='text-blue-500'>Block #752363</small>
-                <small>22 hours ago</small>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 

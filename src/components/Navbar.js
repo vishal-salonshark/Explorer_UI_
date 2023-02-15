@@ -19,9 +19,9 @@ const Navbar = () => {
                 <ul className="flex justify-between items-center space-x-6 ">
                     <a href="/" className="flex justify-between items-center space-x-1"><AiFillDatabase/><label> Home </label></a>
                     <a href="/blocks" className="flex justify-between items-center space-x-1"><GiCubes/><label> Blocks </label></a>
-                    <a href="" className="flex justify-between items-center space-x-1"><BiTransferAlt/><label> Transactions </label></a>
+                    <a href="/transaction" className="flex justify-between items-center space-x-1"><BiTransferAlt/><label> Transactions </label></a>
                     <a href="" className="flex justify-between items-center space-x-1"><GiToken/><label> Tokens </label></a>
-                    <a href="" className="flex justify-between items-center space-x-1"><IoWallet/><label> Users </label></a>
+                    <a href="/user" className="flex justify-between items-center space-x-1"><IoWallet/><label> Users </label></a>
                     <a href="" className="flex justify-between items-center space-x-1"><IoGitNetworkSharp/><label> EriumChain </label></a>
                 </ul>
                 <div className="flex items-center px-6 py-1 rounded-full justify-center bg-[#89CDB3] text-slate-50 space-x-2">

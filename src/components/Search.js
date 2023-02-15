@@ -40,7 +40,7 @@ const Search = ({ setModalOn, setChoice }) => {
                 : 'Select item'}
               <BiChevronDown size={20} className={`${open && 'rotate-180'}`} />
               <ul
-                className={`bg-white mt-2 absolute top-1/4 left-[35rem] right-[70rem] overflow-y-auto  ${
+                className={`bg-white absolute top-auto left-[30rem] right-[50rem] mt-40 overflow-y-auto  ${
                   open ? 'max-h-60' : 'max-h-0'
                 } `}
               >
@@ -310,7 +310,7 @@ const Search = ({ setModalOn, setChoice }) => {
           </div>
           
         </div>
-        <div className='flex justify-center items-center fixed top-[5rem] h-22 w-22 right-[10rem]'>
+        <div className='flex justify-center items-center fixed top-[3rem] h-22 w-22 right-[5rem]'>
                 <TfiClose className=' h-10 w-10 z-10 font-bold text-white' onClick={handleCancelClick} />
         </div>
       </div>
