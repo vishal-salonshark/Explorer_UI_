@@ -350,7 +350,7 @@ const UserDetails = () => {
 
       <div className=" w-1/2 h-full mx-2 p-4 border-2 border-gray-400 rounded-3xl">
         <div className=" h-16 border-b-2 mb-2  border-gray-400 flex items-center ">
-          <label className=" text-white text-xl ">Lastest Transactions</label>
+          <label className=" text-white text-xl ">Transactions From</label>
         </div>
 
         <div className="overflow-auto h-[25rem] scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
