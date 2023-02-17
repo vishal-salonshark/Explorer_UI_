@@ -18,7 +18,7 @@ const TransactionDetails = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       const value = txHashContext
-      console.log(value)
+      // console.log(value)
 
       Axios.get(`http://localhost:3001/tx/${value}`).then((response) => {
         setTransactions(response.data)
@@ -36,6 +36,7 @@ const TransactionDetails = () => {
   const _txFees = String(ts.gasUsed)
   const _gasPrice = String(ts.effectiveGasPrice)
   const _type = String(ts.type)
+  const _contractAddress = String(ts.contractAddress)
 
   return (
     <div className="flex flex-col justify-center items-center w-full min-h-[95vh] ">
@@ -111,8 +112,8 @@ const TransactionDetails = () => {
               <Link className="text-blue-500" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_from}</Link>
             </div>
           </div>
-
-          <div className="   w-full h-16 px-16 flex flex-row ">
+          
+          {_contractAddress === 'null'? <div className="   w-full h-16 px-16 flex flex-row ">
             <div className=" w-1/5 mx-2 text-gray-500  font-light text-sm h-full flex flex-row justify-start items-center">
               <BsFillInfoCircleFill className="mx-2" />
               <label>To</label>
@@ -121,16 +122,16 @@ const TransactionDetails = () => {
               <Link className="text-blue-500" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_to}</Link>
             </div>
           </div>
-
-          {/* <div className="   w-full h-16 px-16 flex flex-row ">
-            <div className="b w-1/5 mx-2 text-gray-500  font-light text-sm h-full flex flex-row justify-start items-center">
-              <BsFillInfoCircleFill className="mx-2" />
-              <label>Value</label>
-            </div>
-            <div className="   text-black font-light text-sm flex flex-row justify-start items-center ">
-              <label className="text-blue-500">{_parentHash}</label>
-            </div>
-          </div> */}
+          : <div className="   w-full h-16 px-16 flex flex-row ">
+          <div className="b w-1/5 mx-2 text-gray-500  font-light text-sm h-full flex flex-row justify-start items-center">
+            <BsFillInfoCircleFill className="mx-2" />
+            <label>ContractAddress</label>
+          </div>
+          <div className="   text-black font-light text-sm flex flex-row justify-start items-center ">
+          <Link className="text-blue-500" to={`/ContractDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_contractAddress}</Link>
+          </div>
+        </div>
+          }
 
           <div className="   w-full h-16 px-16 flex flex-row ">
             <div className=" w-1/5 mx-2 text-gray-500  font-light text-sm h-full flex flex-row justify-start items-center">

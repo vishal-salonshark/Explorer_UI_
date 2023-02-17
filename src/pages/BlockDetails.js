@@ -202,8 +202,9 @@ const BlockDetails = () => {
             const _to = String(transactionReceipt.to)
             const _number = String(transactionReceipt.blockNumber)
             const _txFees = String(transactionReceipt.gasUsed)
-
+            const _contractAddress = String(transactionReceipt.contractAddress)
             return (
+              _contractAddress === 'null' ?
               <div className="w-11/12 h-28 m-2 flex flex-row " key={index}>
                 <div className="bg-blue-100  w-[15rem] flex flex-col justify-center items-center h-full border border-blue-500 border-l-4 rounded-sm ">
                   <Link
@@ -234,11 +235,45 @@ const BlockDetails = () => {
                     </small>
                   </div>
                   <div className=" w-1/4 flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
-                    <small className="text-blue-500">Block #<Link to={'/blockDetails'} onClick={(e)=>setBlockNumberContext(e.target.textContext)}>{_number}</Link></small>
+                    <small className="text-blue-500">Block #<Link to={'/blockDetails'} onClick={(e)=>setBlockNumberContext(e.target.textContent)}>{_number}</Link></small>
                     <small>22 hours ago</small>
                   </div>
                 </div>
               </div>
+              : <div className="w-11/12 h-28 m-2 flex flex-row " key={index}>
+              <div className="bg-green-100  opacity-70 w-[15rem] flex flex-col justify-center items-center h-full border border-green-500 border-l-4 rounded-sm ">
+                <label className="font-bold  text-xs text-green-700">
+                Contract Creation
+                </label>
+                <label className="font-light text-sm text-green-500">
+                  Success
+                </label>
+              </div>
+              <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
+                <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
+                  <div className=' flex flex-row items-center'>
+                  <Link className='text-blue-500 flex flex-row justify-end text-xs' to={`/transactionDetails`} onClick={(el) => setTxHashContext(el.target.textContent)}>{_hash}{' '}</Link>
+                    <small className="text-black font-light bg-gray-300 rounded-sm m-2 p-1 ">
+                      Transfer
+                    </small></div>
+                  <label className=" text-blue-500 flex flex-row justify-end text-xs">
+                    <label className=' text-gray-400'>Created By :</label><Link className="mx-2 truncate" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_from}</Link>
+                    {/* <BsArrowRight className=" text-blue-500" />{' '} */}
+                    <label className=' text-gray-400'>Contract Address :</label><Link className="mx-2 truncate" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_contractAddress}</Link>
+                  </label>
+                  <small className="text-black font-light">
+                    {_gasUsed}{' '}
+                    <label className="text-gray-400 "> TX Fee</label>
+                  </small>
+                </div>
+                <div className=" w-1/5 flex flex-col justify-center items-end text-gray-400 h-full p-4 mx-2">
+                  <small className="text-blue-500">
+                    Block #<Link to={'/blockDetails'} onClick={(e)=>setBlockNumberContext(e.target.textContent)}> {_number} </Link>
+                  </small>
+                  <small>22 hours ago</small>
+                </div>
+              </div>
+            </div>
             )
           })}
 

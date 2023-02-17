@@ -133,12 +133,9 @@ const Search = ({ setModalOn, setChoice }) => {
              <div className="overflow-auto h-[25rem] scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
               {
               transactions.filter((item) => {
+                // console.log('transactions to :' + item.transactions.to?.toLowerCase())
                 // console.log(search.toLowerCase())
-                return search === ''
-                  ? item
-                  : item.transactions.transactionHash.toLowerCase().includes(search) ||
-                  item.transactions.from.toLowerCase().includes(search) ||
-                  item.transactions.to.toLowerCase().includes(search)
+                return search === ''? item: item.transactions.transactionHash?.toLowerCase().includes(search) || item.transactions.from?.toLowerCase().includes(search) || item.transactions.to?.toLowerCase().includes(search)
               }).map((e, index) => {
               return (
                 <div className=" h-16 border-b-2 border-gray-400 flex flex-row items-center " key={index}>

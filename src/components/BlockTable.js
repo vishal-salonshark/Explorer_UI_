@@ -42,7 +42,7 @@ const BlockTable = () => {
 
                   <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
                     <label className="text-blue-500 text-sm font-medium">
-                      <Link to={`/user`} onClick={(e) => setBlockNumberContext(e.target.textContext)}></Link>{user.blockNumber}
+                      <Link to={`/blockDetails`} onClick={(e) => setBlockNumberContext(e.target.textContent)}>{user.blockNumber}</Link>
                     </label>
                     <label className="text-gray-300 text-sm"> 5 min ago...</label>
                   </div>
@@ -62,7 +62,7 @@ const BlockTable = () => {
           }
 
         </div>
-        <label className="animate-text bg-gradient-to-r flex justify-center m-4 from-[#8dd9cc] via-[#89cdb3] to-[#00ffff] bg-clip-text text-transparent text-base font-black">{'View all Blocks >>'}</label>
+        <label className="animate-text bg-gradient-to-r flex justify-center m-4 from-[#8dd9cc] via-[#89cdb3] to-[#00ffff] bg-clip-text text-transparent text-base font-black"><Link to={`/blocks`}>{'View all Blocks >>'}</Link></label>
       </div>
 
       <div className=" w-1/2 h-full mx-2 p-4 border-2 border-gray-400 rounded-3xl">
@@ -111,7 +111,7 @@ const BlockTable = () => {
 
         </div>
 
-        <label className="animate-text bg-gradient-to-r flex justify-center m-4 from-[#8dd9cc] via-[#89cdb3] to-[#00ffff] bg-clip-text text-transparent text-base font-black">{'View all Blocks >>'}</label>
+        <label className="animate-text bg-gradient-to-r flex justify-center m-4 from-[#8dd9cc] via-[#89cdb3] to-[#00ffff] bg-clip-text text-transparent text-base font-black"><Link to={`/transaction`}>{'View all Blocks >>'}</Link></label>
 
       </div>
     </div>

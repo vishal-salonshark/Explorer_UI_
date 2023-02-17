@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react'
 import AppContext from '../components/AppContext'
 
@@ -51,7 +52,7 @@ const AccountBal = () => {
                     balance: ethers.utils.formatUnits(balance, 18),
                 }
             }
-            console.log(tokenData)
+            // console.log(tokenData)
             setTokenBalances(tokenData)
         }
         
@@ -77,7 +78,7 @@ const AccountBal = () => {
         try {
             window.ethereum.on('accountsChanged', accountChangedHandler)
         } catch (error) {
-            if (window.ethereum == undefined) {
+            if (window.ethereum === undefined) {
                 console.log("please install Metamask ...")
             } else {
                 console.log(error)

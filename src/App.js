@@ -13,6 +13,7 @@ import Transaction from "./pages/Transaction";
 import TransactionDetails from "./pages/TransactionDetails";
 import { AppContext } from "./components/AppContext";
 import UserDetails from "./pages/UserDetails";
+import ContractDetails from "./pages/ContractDetails";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
     path: "/UserDetails",
     element: <UserDetails/>,
   },
+  {
+    path: "/ContractDetails",
+    element: <ContractDetails/>,
+  },
 ]);
 
 function App() {
@@ -65,10 +70,11 @@ function App() {
   const [blockNumberContext, setBlockNumberContext] = useState([]);
   const [txHashContext, setTxHashContext] = useState([]);
   const [acc, setAcc] = useState('')
+  const [contractAdd, setContractAdd] = useState([])
 
   return (
     <div className="h-full bg-[#030214]">
-      <AppContext.Provider value= {{blockNumberContext, setBlockNumberContext, txHashContext, setTxHashContext, acc, setAcc, blockData, transactions}}>
+      <AppContext.Provider value= {{blockNumberContext, setBlockNumberContext, txHashContext, setTxHashContext, acc, setAcc, blockData, transactions, contractAdd, setContractAdd}}>
       <Navbar/>
       <RouterProvider router={router} />
       </AppContext.Provider>

@@ -1,36 +1,36 @@
 import React, { useEffect, useState, useContext } from 'react'
-import AccountBal from "../components/AccountBal";
+// import AccountBal from "../components/AccountBal";
 import AppContext from '../components/AppContext'
 import { Link } from 'react-router-dom'
 
 import Axios from 'axios'
 
-const UserDetails = () => {
+const ContractDetails = () => {
+    const {acc, setAcc } = useContext(AppContext)
+    const [userDataFrom, setUserDataFrom] = useState([])
+    const [userDataTo, setUserDataTo] = useState([])
+  
+    useEffect(() => {
 
-  const {acc, setAcc } = useContext(AppContext)
-  const [userDataFrom, setUserDataFrom] = useState([])
-  const [userDataTo, setUserDataTo] = useState([])
+      Axios.get(`http://localhost:3001/user-from/${acc}`).then(async (response) => {
+        setUserDataFrom(await response.data)
+        console.log(await response.data);
+      })
+      Axios.get(`http://localhost:3001/user-to/${acc}`).then(async (response) => {
+        setUserDataTo(response.data)
+        // console.log(response.data);
+      })
+    }, [acc])
 
-  useEffect(() => {
-    Axios.get(`http://localhost:3001/user-from/${acc}`).then(async (response) => {
-      setUserDataFrom(await response.data)
-      // console.log(await response.data);
-    })
-    Axios.get(`http://localhost:3001/user-to/${acc}`).then(async (response) => {
-      setUserDataTo(response.data)
-      // console.log(response.data);
-    })
-  }, [acc])
+  return (
+    <div className="flex flex-col justify-center items-center w-full min-h-[95vh] ">
+        <div className='w-11/12 min-h-[25rem] rounded-3xl m-10 p-10 bg-white'>
+            <label className='text-lg text-black '>Contract Address Details</label>
 
+        </div>
 
-  return(
-
-    <div className='flex flex-col justify-center items-center w-full min-h-screen px-8 py-2'>
-
-      <AccountBal />
-
-      <div className=' w-11/12 h-auto'>
-        <div className="flex flex-row text-white  h-[36rem] w-full py-4">
+        <div className=' w-11/12 h-auto'>
+        <div className="flex flex-row text-white  h-[20rem] w-full py-4">
           <div className="  w-1/2 h-full mx-2 p-4 border-2 border-gray-400 rounded-3xl ">
             <div className=" h-16 border-b-2 mb-2 border-gray-400 flex items-center ">
               <label className=" text-white text-xl ">Transaction From</label>
@@ -72,9 +72,7 @@ const UserDetails = () => {
                 </div>
               )})
             }
-
             </div>
-            <label className="animate-text bg-gradient-to-r flex justify-center m-4 from-[#8dd9cc] via-[#89cdb3] to-[#00ffff] bg-clip-text text-transparent text-base font-black">{'View all Blocks >>'}</label>
           </div>
 
           <div className=" w-1/2 h-full mx-2 p-4 border-2 border-gray-400 rounded-3xl">
@@ -122,18 +120,11 @@ const UserDetails = () => {
               }   
 
             </div>
-
-            <label className="animate-text bg-gradient-to-r flex justify-center m-4 from-[#8dd9cc] via-[#89cdb3] to-[#00ffff] bg-clip-text text-transparent text-base font-black">{'View all Blocks >>'}</label>
-
           </div>
         </div>
-      </div>
-
-
-
+        </div>
     </div>
-
   )
 }
 
-export default UserDetails
+export default ContractDetails
