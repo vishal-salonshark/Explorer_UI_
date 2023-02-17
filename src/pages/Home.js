@@ -15,6 +15,8 @@ const Home = () => {
   const clicked = () => {
     setModalOn(true)
   }
+
+
   const percentage = 66
 
   return (
@@ -32,6 +34,7 @@ const Home = () => {
         />
         {modalOn && <Search setModalOn={setModalOn} setChoice={setChoice} />}
       </div>
+
       <div className="flex flex-row h-60 p-5 opacity-95 w-full">
         <div className="bg-white flex flex-col justify-center items-center mx-4 h-full py-5 rounded-3xl w-1/4">
           <div className=" flex flex-row justify-between items-center h-1/2 w-3/4 ">

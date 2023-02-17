@@ -38,16 +38,21 @@ const router = createBrowserRouter([
     path: "/transactionDetails",
     element: <TransactionDetails/>,
   },
+  {
+    path: "/UserDetails",
+    element: <UserDetails/>,
+  },
 ]);
 
 function App() {
 
   const [blockNumberContext, setBlockNumberContext] = useState();
   const [txHashContext, setTxHashContext] = useState();
+  const [acc, setAcc] = useState('')
 
   return (
     <div className="h-full bg-[#030214]">
-      <AppContext.Provider value= {{blockNumberContext, setBlockNumberContext, txHashContext, setTxHashContext}}>
+      <AppContext.Provider value= {{blockNumberContext, setBlockNumberContext, txHashContext, setTxHashContext, acc, setAcc}}>
       <Navbar/>
       <RouterProvider router={router} />
       </AppContext.Provider>

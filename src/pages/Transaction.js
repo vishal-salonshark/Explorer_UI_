@@ -7,7 +7,7 @@ import Axios from 'axios'
 
 const Transaction = () => {
   const [transactions, setTransactions] = useState([])
-  const { setTxHashContext,setBlockNumberContext } = useContext(AppContext)
+  const { setTxHashContext, setBlockNumberContext, setAcc} = useContext(AppContext)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,21 +38,16 @@ const Transaction = () => {
                 </div>
                 <div className="w-full h-full border border-gray-300 rounded flex flex-row justify-start items-center py-2">
                   <div className=" w-full h-full flex flex-col justify-center items-start text-gray-400 p-4 mx-2">
-                    <div className=' flex flex-row items-center'><Link
-                      className="text-blue-500 text-sm font-light"
-                      to={`/transactionDetails`}
-                      onClick={ (el)=>setTxHashContext(el.target.textContent)}
-                    >
-                      {e.transactions.transactionHash}{' '}
-                    </Link>
-                      <small className="text-black font-light bg-gray-300 rounded-sm my-1 p-1 ">
+                    <div className=' flex flex-row items-center'>
+                    <Link className='text-blue-500 flex flex-row justify-end text-sm' to={`/transactionDetails`} onClick={(el) => setTxHashContext(el.target.textContent)}>{e.transactions.transactionHash}{' '}</Link>
+                      <small className="text-black font-light bg-gray-300 rounded-sm m-2 p-1 ">
                         Transfer
                       </small></div>
-                    <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                      {e.transactions.from}{' '}
+                    <label className=" text-blue-500 flex flex-row justify-end text-xs">
+                      <Link className="mx-2" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{e.transactions.from}</Link>
                       <BsArrowRight className=" text-blue-500" />{' '}
-                      {e.transactions.to}
-                    </small>
+                      <Link className="mx-2" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{e.transactions.to}</Link>
+                    </label>
                     <small className="text-black font-light">
                       {e.transactions.gasUsed}{' '}
                       <label className="text-gray-400 "> TX Fee</label>

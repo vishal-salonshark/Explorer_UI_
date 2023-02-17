@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import AppContext from '../components/AppContext'
+import Axios from 'axios'
 import { BiChevronDown } from 'react-icons/bi'
 import { TfiClose } from "react-icons/tfi";
 
@@ -20,6 +23,21 @@ const Search = ({ setModalOn, setChoice }) => {
       setModalOn(false)
   }
  
+  const [blockData, setBlockData] = useState([])
+  const [transactions, setTransactions] = useState([])
+  const { setBlockNumberContext, setTxHashContext, setAcc } = useContext(AppContext)
+
+  // var n = 0
+  useEffect(() => {
+    // Axios.get('http://localhost:3001/').then((response) => {
+    //   setBlockData(response.data)
+    // })
+
+    // Axios.get(`http://localhost:3001/tarnsactionsList/`).then((response) => {
+    //   setTransactions(response.data)
+    // })
+    console.log(selected)
+  }, [selected])
 
   return (
     <div className="   bg-[#030214] opacity-90 fixed inset-0 z-50   ">
@@ -79,8 +97,111 @@ const Search = ({ setModalOn, setChoice }) => {
             <div className=" h-16 border-b-2 mb-2 border-gray-300 flex items-center ">
               <label className=" text-black text-xl ">Lastest Blocks</label>
             </div>
-            
-            <div className='overflow-auto scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
+            {selected === 'Blocks' ? 
+            <div className="overflow-auto h-[25rem] scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+             {
+             blockData.map((user, index) => {
+                return (
+                  <div className=" h-16 border-b-2 border-gray-400 flex flex-row items-center " key={index}>
+                    <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
+                      <label className="justify-center flex items-center h-full w-full text-black text-sm">
+                        BX
+                      </label>
+                    </div>
+  
+                    <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
+                      <label className="text-blue-500 text-sm font-medium">
+                        <Link to={`/user`} onClick={(e) => setBlockNumberContext(e.target.textContext)}></Link>{user.blockNumber}
+                      </label>
+                      <label className="text-black text-sm"> 5 min ago...</label>
+                    </div>
+  
+                    <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
+                      <label className="text-black text-sm font-medium flex flex-row ">
+                        Validated by{' '}
+                        <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
+                          {user.miner}
+                        </small>
+                      </label>
+                      <label className="text-black text-sm">{user.transactions.length} txns</label>
+                    </div>
+                  </div>
+                )
+              })
+             } 
+              </div>
+             : 
+             <div className="overflow-auto h-[25rem] scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+              {
+              transactions.map((e, index) => {
+              return (
+                <div className=" h-16 border-b-2 border-gray-400 flex flex-row items-center " key={index}>
+                  <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
+                    <label className="justify-center flex items-center h-full w-full text-black text-sm">
+                      TX
+                    </label>
+                  </div>
+
+                  <div className=" h-11 w-56 m-1 flex flex-col justify-center">
+                    <label className="text-blue-500 truncate text-sm font-medium">
+                      <Link to={`/transactionDetails`} onClick={(el) => setTxHashContext(el.target.textContent)}>{e.transactions.transactionHash}{' '}</Link>
+                    </label>
+                    <label className="text-black text-sm"> 5 min ago...</label>
+                  </div>
+
+                  <div className=" h-11 w-56 mx-4 flex flex-col justify-center ">
+                    <label className="text-black truncate text-sm font-medium flex flex-row ">
+                      From:
+                      <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
+                        <Link to={`/UserDetails`} onClick={(e) => setAcc(e.target.textContent)}>{e.transactions.from}</Link>
+                      </small>
+                    </label>
+                    <label className="text-black truncate text-sm font-medium flex flex-row ">
+                      To:
+                      <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
+                        <Link to={`/UserDetails`} onClick={(e) => setAcc(e.target.textContent)}>{e.transactions.to}</Link>
+                      </small>
+                    </label>
+                  </div>
+
+                </div>
+              )
+              })
+              }
+              </div>
+
+            }
+            {/* <(div className='overflow-auto scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
+            {
+            blockData.map((user, index) => {
+              return (
+                <div className=" h-16 border-b-2 border-gray-400 flex flex-row items-center " key={index}>
+                  <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
+                    <label className="justify-center flex items-center h-full w-full text-black text-sm">
+                      BX
+                    </label>
+                  </div>
+
+                  <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
+                    <label className="text-blue-500 text-sm font-medium">
+                      <Link to={`/user`} onClick={(e) => setBlockNumberContext(e.target.textContext)}></Link>{user.blockNumber}
+                    </label>
+                    <label className="text-gray-300 text-sm"> 5 min ago...</label>
+                  </div>
+
+                  <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
+                    <label className="text-white text-sm font-medium flex flex-row ">
+                      Validated by{' '}
+                      <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
+                        {user.miner}
+                      </small>
+                    </label>
+                    <label className="text-gray-300 text-sm">{user.transactions.length} txns</label>
+                  </div>
+                </div>
+              )
+            })
+          }
             <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
               <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
                 <label className="justify-center flex items-center h-full w-full text-black text-sm">
@@ -106,207 +227,9 @@ const Search = ({ setModalOn, setChoice }) => {
               </div>
             </div>
             
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
 
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
 
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
-
-            </div>
+            </div>) */}
           </div>
           
         </div>

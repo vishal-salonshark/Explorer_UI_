@@ -9,13 +9,15 @@ import Axios from 'axios'
 const BlockDetails = () => {
   const [blockDetails, setBlockDetails] = useState({})
   const [ts, setTransactions] = useState([])
-  const { blockNumberContext, setTxHashContext, setBlockNumberContext } = useContext(AppContext)
+  const [ txLenghth, setTxLength] = useState()
+  const { blockNumberContext, setTxHashContext, setBlockNumberContext, setAcc } = useContext(AppContext)
   useEffect(() => {
     const timer = setTimeout(() => {
       const value = Number(blockNumberContext)
       Axios.get(`http://localhost:3001/block/${value}`).then(
         async (response) => {
           setBlockDetails(response.data)
+          setTxLength(response.data.transactions.length)
           // console.log(blockDetails)
         },
       )
@@ -30,10 +32,11 @@ const BlockDetails = () => {
     return () => clearTimeout(timer)
   }, [blockNumberContext])
 
+  console.log(txLenghth)
+
   const newTs= String(new Date((blockDetails.timestamp)*1000))
   const _number = blockDetails.number
   const _timestamp = newTs
-  const _transactions = blockDetails.transactions
   const _miner = blockDetails.miner
   const _size = blockDetails.size
   const _hash = blockDetails.hash
@@ -79,7 +82,7 @@ const BlockDetails = () => {
             </div>
             <div className="   text-black font-light text-sm flex flex-row justify-start items-center ">
               <label className="p-1 bg-blue-100 text-blue-500 rounded">
-                {_transactions === !null ? _transactions.length : 0} Transaction
+                {txLenghth} Transaction
               </label>
             </div>
           </div>
@@ -222,9 +225,9 @@ const BlockDetails = () => {
                       </small>
                     </Link>
                     <small className=" text-blue-500 flex flex-row justify-end text-xs">
-                      {_from}{' '}
+                    <Link to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_from}</Link>{' '}
                       <BsArrowRight className=" text-blue-500 text-base font-bold" />{' '}
-                      {_to}
+                      <Link to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_to}</Link>
                     </small>
                     <small className="text-black font-light text-xs">
                       {_txFees} <label className="text-gray-400 "> TX Fee</label>

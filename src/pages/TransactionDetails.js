@@ -12,7 +12,7 @@ import Axios from 'axios'
 
 const TransactionDetails = () => {
   const [ts, setTransactions] = useState([])
-  const { txHashContext, setBlockNumberContext } = useContext(AppContext)
+  const { txHashContext, setBlockNumberContext, setAcc } = useContext(AppContext)
   // console.log(txHashContext)
 
   useEffect(() => {
@@ -98,8 +98,7 @@ const TransactionDetails = () => {
               <label>Block</label>
             </div>
             <div className="   text-black font-light text-sm flex flex-row justify-start items-center ">
-              <Link className="text-blue-500 text-sm" to={'/blockDetails'} onClick={(e)=>{setBlockNumberContext(e.target.textContent)}}>{_number}</Link>
-            </div>
+              <Link className="text-blue-500 text-sm" to={'/blockDetails'} onClick={(e)=>{setBlockNumberContext(e.target.textContent)}}>{_number}</Link></div>
           </div>
 
           <div className="   w-full h-16 px-16 flex flex-row ">
@@ -108,7 +107,7 @@ const TransactionDetails = () => {
               <label>From</label>
             </div>
             <div className="   text-black font-light text-sm flex flex-row justify-start items-center ">
-              <label className="text-blue-500">{_from} bytes</label>
+              <Link className="text-blue-500" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_from}</Link>
             </div>
           </div>
 
@@ -118,7 +117,7 @@ const TransactionDetails = () => {
               <label>To</label>
             </div>
             <div className="   text-black font-light text-sm flex flex-row justify-start items-center ">
-              <label className="text-blue-500">{_to}</label>
+              <Link className="text-blue-500" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{_to}</Link>
             </div>
           </div>
 

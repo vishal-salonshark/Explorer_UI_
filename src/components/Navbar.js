@@ -2,12 +2,11 @@
 import React from "react";
 // import { BrowserRouter as Router } from 'react-router-dom';
 import  { GiCubes, GiToken } from "react-icons/gi";
-import { IoGitNetworkSharp, IoWallet } from "react-icons/io5";
+import { IoGitNetworkSharp } from "react-icons/io5";
 import  { BiTransferAlt } from "react-icons/bi";
 import  { BsSearch } from "react-icons/bs";
 import { AiFillDatabase } from "react-icons/ai";
 import Logo from "./../img/Erium_logo.png"
-// import { a } from "react-router-dom";
 
 const Navbar = () => {
 
@@ -21,7 +20,7 @@ const Navbar = () => {
                     <a href="/blocks" className="flex justify-between items-center space-x-1"><GiCubes/><label> Blocks </label></a>
                     <a href="/transaction" className="flex justify-between items-center space-x-1"><BiTransferAlt/><label> Transactions </label></a>
                     <a href="" className="flex justify-between items-center space-x-1"><GiToken/><label> Tokens </label></a>
-                    <a href="/user" className="flex justify-between items-center space-x-1"><IoWallet/><label> Users </label></a>
+                    {/* <a href="/user" className="flex justify-between items-center space-x-1"><IoWallet/><label> Users </label></a> */}
                     <a href="" className="flex justify-between items-center space-x-1"><IoGitNetworkSharp/><label> EriumChain </label></a>
                 </ul>
                 <div className="flex items-center px-6 py-1 rounded-full justify-center bg-[#89CDB3] text-slate-50 space-x-2">
