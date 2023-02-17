@@ -18,6 +18,7 @@ const TransactionDetails = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       const value = txHashContext
+      console.log(value)
 
       Axios.get(`http://localhost:3001/tx/${value}`).then((response) => {
         setTransactions(response.data)

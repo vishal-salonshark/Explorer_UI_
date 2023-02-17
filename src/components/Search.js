@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppContext from '../components/AppContext'
-import Axios from 'axios'
+// import Axios from 'axios'
 import { BiChevronDown } from 'react-icons/bi'
 import { TfiClose } from "react-icons/tfi";
 
@@ -10,34 +10,21 @@ const Search = ({ setModalOn, setChoice }) => {
   const [inputValue, setInputValue] = useState('')
   const [selected, setSelected] = useState('')
   const [open, setOpen] = useState(false)
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     const data = [{ option: 'Blocks' }, { option: 'Transaction' }]
     setOptions(data)
   }, [])
-  useEffect(() => {
-    console.log(selected)
-  }, [selected])
+  // useEffect(() => {
+  //   console.log(search)
+  // }, [search])
   
     const handleCancelClick = () => {
       setModalOn(false)
   }
  
-  const [blockData, setBlockData] = useState([])
-  const [transactions, setTransactions] = useState([])
-  const { setBlockNumberContext, setTxHashContext, setAcc } = useContext(AppContext)
-
-  // var n = 0
-  useEffect(() => {
-    // Axios.get('http://localhost:3001/').then((response) => {
-    //   setBlockData(response.data)
-    // })
-
-    // Axios.get(`http://localhost:3001/tarnsactionsList/`).then((response) => {
-    //   setTransactions(response.data)
-    // })
-    console.log(selected)
-  }, [selected])
+  const { blockData, transactions, setBlockNumberContext, setTxHashContext, setAcc } = useContext(AppContext)
 
   return (
     <div className="   bg-[#030214] opacity-90 fixed inset-0 z-50   ">
@@ -55,7 +42,7 @@ const Search = ({ setModalOn, setChoice }) => {
                 ? selected?.length > 25
                   ? selected?.substring(0, 25) + '...'
                   : selected
-                : 'Select item'}
+                : 'Select Option'}
               <BiChevronDown size={20} className={`${open && 'rotate-180'}`} />
               <ul
                 className={`bg-white absolute top-auto left-[30rem] right-[50rem] mt-40 overflow-y-auto  ${
@@ -90,17 +77,28 @@ const Search = ({ setModalOn, setChoice }) => {
                 ))}
               </ul>
             </div>
-            <input className="bg-white flex items-center justify-between rounded-r-lg border-none text-black w-4/5" />
+            <input className="bg-white flex items-center justify-between rounded-r-lg border-none text-black w-4/5" 
+            onInput={(e) => {
+              setSearch((e.target.value).toLowerCase())
+            }} />
           </div>
 
           <div className="bg-white flex flex-col mx-2 p-4 rounded-lg shadow-2xl shadow-[#89cdb3c2] text-black w-2/3 h-[30rem] ">
             <div className=" h-16 border-b-2 mb-2 border-gray-300 flex items-center ">
-              <label className=" text-black text-xl ">Lastest Blocks</label>
+              <label className=" text-black text-xl ">{selected === 'Blocks' ?`Lastest Blocks` :selected ==='Transaction'? `Lastest Transactions` :`Please Select Option ..`}</label>
             </div>
             {selected === 'Blocks' ? 
             <div className="overflow-auto h-[25rem] scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
              {
-             blockData.map((user, index) => {
+             blockData.filter((item) => {
+              return search === ''
+                ? item
+                : item.blockHash.toLowerCase().includes(search) ||
+                    String(item.blockNumber)
+                      .toLowerCase()
+                      .includes(search)
+            }).map((user, index) => {
+              // console.log(user)
                 return (
                   <div className=" h-16 border-b-2 border-gray-400 flex flex-row items-center " key={index}>
                     <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
@@ -109,17 +107,18 @@ const Search = ({ setModalOn, setChoice }) => {
                       </label>
                     </div>
   
-                    <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
+                    <div className=" h-11 w-60 m-1 flex flex-col justify-center p-5">
                       <label className="text-blue-500 text-sm font-medium">
-                        <Link to={`/user`} onClick={(e) => setBlockNumberContext(e.target.textContext)}></Link>{user.blockNumber}
+                        <Link to={`/blockDetails/`} onClick={(e) => setBlockNumberContext(e.target.textContent)}>{user.blockNumber}</Link>
+                        {/* <label  onClick={(e) => console.log(e.target.textContent)}>{user.blockNumber}</label> */}
                       </label>
                       <label className="text-black text-sm"> 5 min ago...</label>
                     </div>
   
-                    <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                      <label className="text-black text-sm font-medium flex flex-row ">
+                    <div className=" h-11 w-96 mx-2 flex flex-col justify-center p-2">
+                      <label className="text-black text-sm w-80 font-medium flex flex-row ">
                         Validated by{' '}
-                        <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
+                        <small className="text-blue-500 mx-1 w-56 truncate text-sm font-light">
                           {user.miner}
                         </small>
                       </label>
@@ -130,10 +129,17 @@ const Search = ({ setModalOn, setChoice }) => {
               })
              } 
               </div>
-             : 
+             :selected ==='Transaction'? 
              <div className="overflow-auto h-[25rem] scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
               {
-              transactions.map((e, index) => {
+              transactions.filter((item) => {
+                // console.log(search.toLowerCase())
+                return search === ''
+                  ? item
+                  : item.transactions.transactionHash.toLowerCase().includes(search) ||
+                  item.transactions.from.toLowerCase().includes(search) ||
+                  item.transactions.to.toLowerCase().includes(search)
+              }).map((e, index) => {
               return (
                 <div className=" h-16 border-b-2 border-gray-400 flex flex-row items-center " key={index}>
                   <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
@@ -142,23 +148,23 @@ const Search = ({ setModalOn, setChoice }) => {
                     </label>
                   </div>
 
-                  <div className=" h-11 w-56 m-1 flex flex-col justify-center">
+                  <div className=" h-11 w-80 m-1 flex flex-col justify-center">
                     <label className="text-blue-500 truncate text-sm font-medium">
                       <Link to={`/transactionDetails`} onClick={(el) => setTxHashContext(el.target.textContent)}>{e.transactions.transactionHash}{' '}</Link>
                     </label>
                     <label className="text-black text-sm"> 5 min ago...</label>
                   </div>
 
-                  <div className=" h-11 w-56 mx-4 flex flex-col justify-center ">
+                  <div className=" h-11 w-60 mx-4 flex flex-col justify-center ">
                     <label className="text-black truncate text-sm font-medium flex flex-row ">
                       From:
-                      <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
+                      <small className="text-blue-500 mx-1 w-30 truncate text-sm font-light">
                         <Link to={`/UserDetails`} onClick={(e) => setAcc(e.target.textContent)}>{e.transactions.from}</Link>
                       </small>
                     </label>
                     <label className="text-black truncate text-sm font-medium flex flex-row ">
                       To:
-                      <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
+                      <small className="text-blue-500 mx-1 w-30 truncate text-sm font-light">
                         <Link to={`/UserDetails`} onClick={(e) => setAcc(e.target.textContent)}>{e.transactions.to}</Link>
                       </small>
                     </label>
@@ -169,67 +175,11 @@ const Search = ({ setModalOn, setChoice }) => {
               })
               }
               </div>
-
+              : ''
             }
-            {/* <(div className='overflow-auto scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full'>
-            {
-            blockData.map((user, index) => {
-              return (
-                <div className=" h-16 border-b-2 border-gray-400 flex flex-row items-center " key={index}>
-                  <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                    <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                      BX
-                    </label>
-                  </div>
-
-                  <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                    <label className="text-blue-500 text-sm font-medium">
-                      <Link to={`/user`} onClick={(e) => setBlockNumberContext(e.target.textContext)}></Link>{user.blockNumber}
-                    </label>
-                    <label className="text-gray-300 text-sm"> 5 min ago...</label>
-                  </div>
-
-                  <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                    <label className="text-white text-sm font-medium flex flex-row ">
-                      Validated by{' '}
-                      <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                        {user.miner}
-                      </small>
-                    </label>
-                    <label className="text-gray-300 text-sm">{user.transactions.length} txns</label>
-                  </div>
-                </div>
-              )
-            })
-          }
-            <div className=" h-16 border-b-2 border-gray-300 flex flex-row items-center ">
-              <div className="bg-gray-400 m-4 h-12 w-12 rounded-lg">
-                <label className="justify-center flex items-center h-full w-full text-black text-sm">
-                  TX
-                </label>
-              </div>
-
-              <div className=" h-11 w-40 m-1 flex flex-col justify-center p-2">
-                <label className="text-blue-500 text-sm font-medium">
-                  627551
-                </label>
-                <label className="text-black text-sm"> 5 min ago...</label>
-              </div>
-
-              <div className=" h-11 w-56 mx-2 flex flex-col justify-center p-2">
-                <label className="text-black text-sm font-medium flex flex-row ">
-                  Validated by{' '}
-                  <small className="text-blue-500 mx-1 w-20 truncate text-sm font-light">
-                    0x82b842992a7050443E54686e8c3483798dC5E678
-                  </small>
-                </label>
-                <label className="text-black text-sm"> 0 txns</label>
-              </div>
-            </div>
             
 
 
-            </div>) */}
           </div>
           
         </div>

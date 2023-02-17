@@ -1,9 +1,10 @@
-import React,{useState}  from "react";
+import React,{useState, useEffect}  from "react";
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import Navbar from './components/Navbar'
+import Axios from "axios";
 
 import Home from './pages/Home';
 import Blocks from './pages/Blocks';
@@ -45,14 +46,29 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const [blockData, setBlockData] = useState([])
+  const [transactions, setTransactions] = useState([])
 
-  const [blockNumberContext, setBlockNumberContext] = useState();
-  const [txHashContext, setTxHashContext] = useState();
+  // var n = 0
+  useEffect(() => {
+    Axios.get('http://localhost:3001/').then((response) => {
+      setBlockData(response.data)
+    })
+
+    Axios.get(`http://localhost:3001/tarnsactionsList/`).then((response) => {
+      setTransactions(response.data)
+    })
+    
+  }, [])
+
+
+  const [blockNumberContext, setBlockNumberContext] = useState([]);
+  const [txHashContext, setTxHashContext] = useState([]);
   const [acc, setAcc] = useState('')
 
   return (
     <div className="h-full bg-[#030214]">
-      <AppContext.Provider value= {{blockNumberContext, setBlockNumberContext, txHashContext, setTxHashContext, acc, setAcc}}>
+      <AppContext.Provider value= {{blockNumberContext, setBlockNumberContext, txHashContext, setTxHashContext, acc, setAcc, blockData, transactions}}>
       <Navbar/>
       <RouterProvider router={router} />
       </AppContext.Provider>
