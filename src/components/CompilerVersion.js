@@ -28,7 +28,7 @@ const CompilerVersion = () => {
         <BiChevronDown size={20} className={`${open && 'rotate-180'}`} />
       </div>
         <ul
-          className={`bg-white mt-2 absolute top-[34rem] left-96 right-2/4 shadow-lg shadow-gray-400 rounded-lg overflow-auto
+          className={`bg-white mt-2 absolute top-[21.5rem] left-96 right-2/4 shadow-lg shadow-gray-400 rounded-lg overflow-auto
           scrollbar-thin scrollbar-track-inherit scrollbar-thumb-gray-300  overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full ${
             open ? 'max-h-60' : 'max-h-0'
           } `}

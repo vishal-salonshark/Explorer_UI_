@@ -40,7 +40,7 @@ const IsOptimized = () => {
                 : 'Select Compiler Version'}
               <BiChevronDown size={20} className={`${open && 'rotate-180'}`} />
               <ul
-               className={`bg-white mt-2 absolute top-[44rem] left-1/4 right-1/4 shadow-lg shadow-gray-400 rounded-lg overflow-y-auto ${
+               className={`bg-white mt-2 absolute top-[32rem] left-1/4 right-1/4 shadow-lg shadow-gray-400 rounded-lg overflow-y-auto ${
                 open ? "max-h-60" : "max-h-0"
               } `}
             >
