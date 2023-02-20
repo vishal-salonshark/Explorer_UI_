@@ -16,9 +16,6 @@ const Search = ({ setModalOn, setChoice }) => {
     const data = [{ option: 'Blocks' }, { option: 'Transaction' }]
     setOptions(data)
   }, [])
-  // useEffect(() => {
-  //   console.log(search)
-  // }, [search])
   
     const handleCancelClick = () => {
       setModalOn(false)

@@ -15,6 +15,7 @@ const AccountBal = () => {
     const [tokenBalances, setTokenBalances] = useState({})
 
     const provider = new ethers.providers.JsonRpcProvider('http://99.80.123.81:8545')
+
     const tokenAddresses = {
         mctk: '0xd33709aD9462FEaF29f32C1db0e1Cf529305282f',
         alpha: '0xf2567A10b2A0EC62990d36516865CFC2b401B07F',

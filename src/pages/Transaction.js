@@ -82,7 +82,7 @@ const Transaction = () => {
                   <label className=" text-blue-500 flex flex-row justify-end text-xs">
                     <label className=' text-gray-400'>Created By :</label><Link className="mx-2 truncate" to={`/UserDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{e.transactions.from}</Link>
                     {/* <BsArrowRight className=" text-blue-500" />{' '} */}
-                    <label className=' text-gray-400'>Contract Address :</label><Link className="mx-2 truncate" to={`/ContractDetails`} onClick={(e)=>setAcc(e.target.textContent)}>{e.transactions.contractAddress}</Link>
+                    <label className=' text-gray-400'>Contract Address :</label><Link className="mx-2 truncate" to={`/ContractDetails`} onClick={(e)=>setAcc((e.target.textContent).toLowerCase())}>{e.transactions.contractAddress}</Link>
                   </label>
                   <small className="text-black font-light">
                     {e.transactions.gasUsed}{' '}
